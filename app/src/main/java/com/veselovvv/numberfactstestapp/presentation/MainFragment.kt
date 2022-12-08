@@ -1,4 +1,4 @@
-package com.veselovvv.numberfactstestapp.presentation.main
+package com.veselovvv.numberfactstestapp.presentation
 
 import android.os.Bundle
 import android.view.LayoutInflater

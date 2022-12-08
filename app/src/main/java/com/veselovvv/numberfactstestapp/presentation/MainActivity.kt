@@ -1,8 +1,8 @@
-package com.veselovvv.numberfactstestapp
+package com.veselovvv.numberfactstestapp.presentation
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.veselovvv.numberfactstestapp.presentation.main.MainFragment
+import com.veselovvv.numberfactstestapp.R
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
