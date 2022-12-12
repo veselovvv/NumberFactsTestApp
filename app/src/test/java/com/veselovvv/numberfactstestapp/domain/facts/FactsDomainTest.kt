@@ -1,5 +1,11 @@
 package com.veselovvv.numberfactstestapp.domain.facts
 
+import com.veselovvv.numberfactstestapp.TestResourceProvider
+import com.veselovvv.numberfactstestapp.core.ErrorType
+import com.veselovvv.numberfactstestapp.data.facts.FactData
+import com.veselovvv.numberfactstestapp.presentation.facts.BaseFactDomainToUiMapper
+import com.veselovvv.numberfactstestapp.presentation.facts.BaseFactsDomainToUiMapper
+import com.veselovvv.numberfactstestapp.presentation.facts.FactsUi
 import org.junit.Assert.assertEquals
 import org.junit.Test
 

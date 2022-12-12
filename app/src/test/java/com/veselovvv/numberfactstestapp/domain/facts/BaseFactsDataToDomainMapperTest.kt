@@ -1,5 +1,7 @@
 package com.veselovvv.numberfactstestapp.domain.facts
 
+import com.veselovvv.numberfactstestapp.core.ErrorType
+import com.veselovvv.numberfactstestapp.data.facts.FactData
 import org.junit.Assert.assertEquals
 import org.junit.Test
 

@@ -1,5 +1,9 @@
 package com.veselovvv.numberfactstestapp.domain.facts
 
+import com.veselovvv.numberfactstestapp.data.facts.FactData
+import com.veselovvv.numberfactstestapp.data.facts.FactsData
+import com.veselovvv.numberfactstestapp.data.facts.FactsRepository
+
 class TestFactsRepository(private val exception: Exception? = null) : FactsRepository {
     override suspend fun fetchFacts() =
         if (exception == null)
@@ -10,5 +14,10 @@ class TestFactsRepository(private val exception: Exception? = null) : FactsRepos
                     FactData(99, "99 is the highest jersey number allowed in most major league sports.")
                 )
             )
+        else FactsData.Fail(exception)
+
+    override suspend fun deleteFacts() =
+        if (exception == null)
+            FactsData.Success(listOf())
         else FactsData.Fail(exception)
 }
