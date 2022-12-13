@@ -9,7 +9,10 @@ class DeleteFactsUseCaseTest {
     @Test
     fun test_success() = runBlocking {
         val factMapper = BaseFactDataToDomainMapper()
-        val useCase = DeleteFactsUseCase(TestFactsRepository(), BaseFactsDataToDomainMapper(factMapper))
+        val useCase = DeleteFactsUseCase.Base(
+            TestFactsRepository(),
+            BaseFactsDataToDomainMapper(factMapper)
+        )
 
         val expected = FactsDomain.Success(listOf(), factMapper)
         val actual = useCase.execute()
@@ -19,7 +22,7 @@ class DeleteFactsUseCaseTest {
     @Test
     fun test_fail() = runBlocking {
         val factMapper = BaseFactDataToDomainMapper()
-        val useCase = DeleteFactsUseCase(
+        val useCase = DeleteFactsUseCase.Base(
             TestFactsRepository(Exception()),
             BaseFactsDataToDomainMapper(factMapper)
         )

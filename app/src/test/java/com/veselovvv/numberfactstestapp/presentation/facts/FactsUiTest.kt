@@ -1,7 +1,5 @@
 package com.veselovvv.numberfactstestapp.presentation.facts
 
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.Observer
 import com.veselovvv.numberfactstestapp.domain.facts.FactDomain
 import org.junit.Assert.assertEquals
 import org.junit.Test
@@ -44,18 +42,6 @@ class FactsUiTest {
         val expected = listOf(FactUi.Fail(GENERIC_ERROR_MESSAGE))
         val actual = communication.getFacts()
         assertEquals(expected, actual)
-    }
-
-    class TestCommunication : FactsCommunication {
-        private var facts = listOf<FactUi>()
-
-        fun getFacts() = facts
-
-        override fun map(facts: List<FactUi>) {
-            this.facts = facts
-        }
-
-        override fun observe(owner: LifecycleOwner, observer: Observer<List<FactUi>>) = Unit
     }
 
     companion object {

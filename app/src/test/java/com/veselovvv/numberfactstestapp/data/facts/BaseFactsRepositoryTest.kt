@@ -53,8 +53,6 @@ class BaseFactsRepositoryTest {
     }
 
     class TestFactsDataSource(private val success: Boolean) : FactsDataSource {
-        // TODO add method save() here or make 2 different data sources?
-
         override fun getFacts() = if (success) listOf(
             FactDb(1, "1 is the loneliest number."),
             FactDb(10, "10 is the number of Provinces in Canada."),

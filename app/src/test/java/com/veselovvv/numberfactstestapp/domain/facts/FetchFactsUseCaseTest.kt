@@ -16,7 +16,10 @@ class FetchFactsUseCaseTest {
         )
 
         val factMapper = BaseFactDataToDomainMapper()
-        val useCase = FetchFactsUseCase(TestFactsRepository(), BaseFactsDataToDomainMapper(factMapper))
+        val useCase = FetchFactsUseCase.Base(
+            TestFactsRepository(),
+            BaseFactsDataToDomainMapper(factMapper)
+        )
 
         val expected = FactsDomain.Success(facts, factMapper)
         val actual = useCase.execute()
@@ -26,7 +29,7 @@ class FetchFactsUseCaseTest {
     @Test
     fun test_fail() = runBlocking {
         val factMapper = BaseFactDataToDomainMapper()
-        val useCase = FetchFactsUseCase(
+        val useCase = FetchFactsUseCase.Base(
             TestFactsRepository(Exception()),
             BaseFactsDataToDomainMapper(factMapper)
         )
