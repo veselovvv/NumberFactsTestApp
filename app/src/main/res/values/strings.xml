@@ -4,4 +4,8 @@
     <string name="get_fact">Get fact</string>
     <string name="get_fact_about_random_number">Get fact about random number</string>
     <string name="history">History</string>
+    <string name="no_history">No history</string>
+    <string name="no_connection_message">No connection. Please try again!</string>
+    <string name="service_unavailable_message">Service unavailable. Please try again!</string>
+    <string name="something_went_wrong_message">Something went wrong. Please try again!</string>
 </resources>
