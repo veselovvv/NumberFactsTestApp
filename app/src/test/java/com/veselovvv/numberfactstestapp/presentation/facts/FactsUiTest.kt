@@ -14,7 +14,7 @@ class FactsUiTest {
         )
 
         var ui = FactsUi.Success(facts, BaseFactDomainToUiMapper())
-        val communication = TestCommunication()
+        val communication = TestFactsCommunication()
         ui.map(communication)
 
         var expected = listOf<FactUi>(
@@ -36,7 +36,7 @@ class FactsUiTest {
     @Test
     fun test_fail() {
         val ui = FactsUi.Fail(GENERIC_ERROR_MESSAGE)
-        val communication = TestCommunication()
+        val communication = TestFactsCommunication()
         ui.map(communication)
 
         val expected = listOf(FactUi.Fail(GENERIC_ERROR_MESSAGE))

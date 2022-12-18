@@ -3,7 +3,7 @@ package com.veselovvv.numberfactstestapp.presentation.facts
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 
-class TestCommunication : FactsCommunication {
+class TestFactsCommunication : FactsCommunication {
     private var facts = listOf<FactUi>()
 
     fun getFacts() = facts

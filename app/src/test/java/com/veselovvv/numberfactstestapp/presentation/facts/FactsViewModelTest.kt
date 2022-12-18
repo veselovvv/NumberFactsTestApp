@@ -17,7 +17,7 @@ class FactsViewModelTest {
     @OptIn(ExperimentalCoroutinesApi::class)
     @Test
     fun test_fetch_facts_success() = runBlocking {
-        val communication = TestCommunication()
+        val communication = TestFactsCommunication()
         val dispatchers = UnconfinedTestDispatcher()
         val deleteFactsUseCase = TestDeleteFactsUseCase()
         val factsMapper = BaseFactsDomainToUiMapper(TestResourceProvider(), BaseFactDomainToUiMapper())
@@ -63,7 +63,7 @@ class FactsViewModelTest {
     @OptIn(ExperimentalCoroutinesApi::class)
     @Test
     fun test_fetch_facts_fail() = runBlocking {
-        val communication = TestCommunication()
+        val communication = TestFactsCommunication()
         val dispatchers = UnconfinedTestDispatcher()
 
         val viewModel = FactsViewModel(
@@ -86,7 +86,7 @@ class FactsViewModelTest {
     @OptIn(ExperimentalCoroutinesApi::class)
     @Test
     fun test_delete_facts_success() = runBlocking {
-        val communication = TestCommunication()
+        val communication = TestFactsCommunication()
         val dispatchers = UnconfinedTestDispatcher()
 
         val viewModel = FactsViewModel(
@@ -109,7 +109,7 @@ class FactsViewModelTest {
     @OptIn(ExperimentalCoroutinesApi::class)
     @Test
     fun test_delete_facts_fail() = runBlocking {
-        val communication = TestCommunication()
+        val communication = TestFactsCommunication()
         val dispatchers = UnconfinedTestDispatcher()
 
         val viewModel = FactsViewModel(
