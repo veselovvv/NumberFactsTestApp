@@ -1,7 +1,8 @@
-package com.veselovvv.numberfactstestapp.data.facts
+package com.veselovvv.numberfactstestapp.data.core
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.veselovvv.numberfactstestapp.data.facts.ToFactMapper
 
 @Entity
 data class FactDb(
