@@ -2,6 +2,8 @@ package com.veselovvv.numberfactstestapp.presentation.fact
 
 import com.veselovvv.numberfactstestapp.TestResourceProvider
 import com.veselovvv.numberfactstestapp.core.ErrorType
+import com.veselovvv.numberfactstestapp.domain.fact.FactDetailsDomain
+import com.veselovvv.numberfactstestapp.domain.fact.FetchFactUseCase
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.UnconfinedTestDispatcher

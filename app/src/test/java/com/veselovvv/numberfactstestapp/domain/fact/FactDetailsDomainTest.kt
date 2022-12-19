@@ -2,6 +2,8 @@ package com.veselovvv.numberfactstestapp.domain.fact
 
 import com.veselovvv.numberfactstestapp.TestResourceProvider
 import com.veselovvv.numberfactstestapp.core.ErrorType
+import com.veselovvv.numberfactstestapp.presentation.fact.BaseFactDetailsDomainToUiMapper
+import com.veselovvv.numberfactstestapp.presentation.fact.FactDetailsUi
 import org.junit.Assert.assertEquals
 import org.junit.Test
 

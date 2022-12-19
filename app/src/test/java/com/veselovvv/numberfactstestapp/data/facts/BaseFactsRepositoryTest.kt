@@ -1,6 +1,7 @@
 package com.veselovvv.numberfactstestapp.data.facts
 
 import com.veselovvv.numberfactstestapp.data.TestException
+import com.veselovvv.numberfactstestapp.data.core.FactDb
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
 import org.junit.Test

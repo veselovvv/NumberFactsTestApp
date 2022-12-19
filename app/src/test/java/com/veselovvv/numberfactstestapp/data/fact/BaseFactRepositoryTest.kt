@@ -1,8 +1,10 @@
 package com.veselovvv.numberfactstestapp.data.fact
 
 import com.veselovvv.numberfactstestapp.data.TestException
-import com.veselovvv.numberfactstestapp.data.facts.FactDb
-import com.veselovvv.numberfactstestapp.data.facts.ToFactMapper
+import com.veselovvv.numberfactstestapp.data.core.FactDb
+import com.veselovvv.numberfactstestapp.data.fact.cache.FactCacheDataSource
+import com.veselovvv.numberfactstestapp.data.fact.cache.FactDataToDbMapper
+import com.veselovvv.numberfactstestapp.data.fact.cloud.FactCloudDataSource
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
 import org.junit.Test
@@ -16,7 +18,7 @@ class BaseFactRepositoryTest {
         val repository = FactRepository.Base(
             testCloudDataSource,
             testCacheDataSource,
-            FactCloudMapper.Base(ToFactMapper.Base())
+            FactDataToDbMapper.Base()
         )
 
         val expected = FactDetailsData.Success
@@ -32,7 +34,7 @@ class BaseFactRepositoryTest {
         val repository = FactRepository.Base(
             testCloudDataSource,
             testCacheDataSource,
-            FactCloudMapper.Base(ToFactMapper.Base())
+            FactDataToDbMapper.Base()
         )
 
         val expected = FactDetailsData.Fail(TestException(""))
@@ -48,7 +50,7 @@ class BaseFactRepositoryTest {
         val repository = FactRepository.Base(
             testCloudDataSource,
             testCacheDataSource,
-            FactCloudMapper.Base(ToFactMapper.Base())
+            FactDataToDbMapper.Base()
         )
 
         val expected = FactDetailsData.Fail(TestException(""))
@@ -64,7 +66,7 @@ class BaseFactRepositoryTest {
         val repository = FactRepository.Base(
             testCloudDataSource,
             testCacheDataSource,
-            FactCloudMapper.Base(ToFactMapper.Base())
+            FactDataToDbMapper.Base()
         )
 
         val expected = FactDetailsData.Fail(TestException(""))
@@ -73,8 +75,8 @@ class BaseFactRepositoryTest {
     }
 
     class TestFactCloudDataSource(private val success: Boolean) : FactCloudDataSource {
-        override fun fetchFact(number: Int) =
-            if (success) FactCloud("1 is the loneliest number.")
+        override suspend fun fetchFact(number: Int) =
+            if (success) "1 is the loneliest number."
             else throw TestException("")
     }
 
