@@ -1,5 +1,7 @@
 package com.veselovvv.numberfactstestapp.data.facts
 
+import com.veselovvv.numberfactstestapp.data.core.FactDb
+
 interface FactsDbToDataMapper {
     fun map(facts: List<FactDb>): List<FactData>
 

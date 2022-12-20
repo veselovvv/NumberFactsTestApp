@@ -2,6 +2,7 @@ package com.veselovvv.numberfactstestapp.data.facts
 
 import android.content.Context
 import com.veselovvv.numberfactstestapp.data.core.BaseCacheDataSource
+import com.veselovvv.numberfactstestapp.data.core.FactDb
 
 interface FactsDataSource {
     fun getFacts(): List<FactDb>
