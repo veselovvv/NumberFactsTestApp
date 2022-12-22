@@ -4,7 +4,7 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.veselovvv.numberfactstestapp.di.facts.FactsDomainModule
+import com.veselovvv.numberfactstestapp.di.core.CoreDomainModule
 import com.veselovvv.numberfactstestapp.domain.facts.DeleteFactsUseCase
 import com.veselovvv.numberfactstestapp.domain.facts.FactsDomainToUiMapper
 import com.veselovvv.numberfactstestapp.domain.facts.FetchFactsUseCase
@@ -17,8 +17,8 @@ import javax.inject.Inject
 @HiltViewModel
 class FactsViewModel @Inject constructor(
     private val communication: FactsCommunication,
-    @FactsDomainModule.IoDispatcher private val dispatchersIO: CoroutineDispatcher,
-    @FactsDomainModule.MainDispatcher private val dispatchersMain: CoroutineDispatcher,
+    @CoreDomainModule.IoDispatcher private val dispatchersIO: CoroutineDispatcher,
+    @CoreDomainModule.MainDispatcher private val dispatchersMain: CoroutineDispatcher,
     private val fetchFactsUseCase: FetchFactsUseCase,
     private val deleteFactsUseCase: DeleteFactsUseCase,
     private val mapper: FactsDomainToUiMapper,
