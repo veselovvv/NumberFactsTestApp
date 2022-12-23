@@ -10,7 +10,7 @@ interface FactsDataSource {
 
     class Base(context: Context) : FactsDataSource, BaseCacheDataSource.Abstract<FactsDao>(context) {
         override fun dao() = room.factsDao()
-        override fun getFacts() = dao().getFacts()
+        override fun getFacts() = dao().getFacts().sortedByDescending { fact -> fact.currentDateTime }
         override fun deleteFacts() = dao().deleteFacts()
     }
 }
