@@ -11,25 +11,37 @@ import org.junit.Test
 
 class BaseFactRepositoryTest {
     @Test
-    fun test_fetch_fact_cloud_success_cache_success() = runBlocking {
+    fun test_fetch_fact_cloud_success_cache_success_fact_already_exists() = runBlocking {
         val testCloudDataSource = TestFactCloudDataSource(true)
-        val testCacheDataSource = TestFactCacheDataSource(true)
+        val testCacheDataSource = TestFactCacheDataSource(
+            success = true,
+            isFactAlreadyExists = true
+        )
 
         val repository = FactRepository.Base(
             testCloudDataSource,
             testCacheDataSource,
             FactDataToDbMapper.Base()
         )
+
+        val factBeforeFetching = testCacheDataSource.getFact(1)
+        assertEquals(false, factBeforeFetching == null)
 
         val expected = FactDetailsData.Success
         val actual = repository.fetchFact(1)
         assertEquals(expected, actual)
+
+        val factAfterFetching = testCacheDataSource.getFact(1)
+        assertEquals(false, factAfterFetching == null)
     }
 
     @Test
-    fun test_fetch_fact_cloud_fail_cache_fail() = runBlocking {
-        val testCloudDataSource = TestFactCloudDataSource(false)
-        val testCacheDataSource = TestFactCacheDataSource(false)
+    fun test_fetch_fact_cloud_success_cache_success_fact_doesnt_exists() = runBlocking {
+        val testCloudDataSource = TestFactCloudDataSource(true)
+        val testCacheDataSource = TestFactCacheDataSource(
+            success = true,
+            isFactAlreadyExists = false
+        )
 
         val repository = FactRepository.Base(
             testCloudDataSource,
@@ -37,15 +49,74 @@ class BaseFactRepositoryTest {
             FactDataToDbMapper.Base()
         )
 
+        val factBeforeFetching = testCacheDataSource.getFact(1)
+        assertEquals(true, factBeforeFetching == null)
+
+        val expected = FactDetailsData.Success
+        val actual = repository.fetchFact(1)
+        assertEquals(expected, actual)
+
+        val factAfterFetching = testCacheDataSource.getFact(1)
+        assertEquals(false, factAfterFetching == null)
+    }
+
+    @Test
+    fun test_fetch_fact_cloud_fail_cache_fail_fact_already_exists() = runBlocking {
+        val testCloudDataSource = TestFactCloudDataSource(false)
+        val testCacheDataSource = TestFactCacheDataSource(
+            success = false,
+            isFactAlreadyExists = true
+        )
+
+        val repository = FactRepository.Base(
+            testCloudDataSource,
+            testCacheDataSource,
+            FactDataToDbMapper.Base()
+        )
+
+        val factBeforeFetching = testCacheDataSource.getFact(1)
+        assertEquals(false, factBeforeFetching == null)
+
         val expected = FactDetailsData.Fail(TestException(""))
         val actual = repository.fetchFact(1)
         assertEquals(expected, actual)
+
+        val factAfterFetching = testCacheDataSource.getFact(1)
+        assertEquals(false, factAfterFetching == null)
+    }
+
+    @Test
+    fun test_fetch_fact_cloud_fail_cache_fail_fact_doesnt_exists() = runBlocking {
+        val testCloudDataSource = TestFactCloudDataSource(false)
+        val testCacheDataSource = TestFactCacheDataSource(
+            success = false,
+            isFactAlreadyExists = false
+        )
+
+        val repository = FactRepository.Base(
+            testCloudDataSource,
+            testCacheDataSource,
+            FactDataToDbMapper.Base()
+        )
+
+        val factBeforeFetching = testCacheDataSource.getFact(1)
+        assertEquals(true, factBeforeFetching == null)
+
+        val expected = FactDetailsData.Fail(TestException(""))
+        val actual = repository.fetchFact(1)
+        assertEquals(expected, actual)
+
+        val factAfterFetching = testCacheDataSource.getFact(1)
+        assertEquals(true, factAfterFetching == null)
     }
 
     @Test
     fun test_fetch_fact_cloud_success_cache_fail() = runBlocking {
         val testCloudDataSource = TestFactCloudDataSource(true)
-        val testCacheDataSource = TestFactCacheDataSource(false)
+        val testCacheDataSource = TestFactCacheDataSource(
+            success = false,
+            isFactAlreadyExists = false
+        )
 
         val repository = FactRepository.Base(
             testCloudDataSource,
@@ -56,12 +127,16 @@ class BaseFactRepositoryTest {
         val expected = FactDetailsData.Fail(TestException(""))
         val actual = repository.fetchFact(1)
         assertEquals(expected, actual)
+
     }
 
     @Test
-    fun test_fetch_fact_cloud_fail_cache_success() = runBlocking {
+    fun test_fetch_fact_cloud_fail_cache_success_fact_already_exists() = runBlocking {
         val testCloudDataSource = TestFactCloudDataSource(false)
-        val testCacheDataSource = TestFactCacheDataSource(true)
+        val testCacheDataSource = TestFactCacheDataSource(
+            success = true,
+            isFactAlreadyExists = true
+        )
 
         val repository = FactRepository.Base(
             testCloudDataSource,
@@ -69,9 +144,40 @@ class BaseFactRepositoryTest {
             FactDataToDbMapper.Base()
         )
 
+        val factBeforeFetching = testCacheDataSource.getFact(1)
+        assertEquals(false, factBeforeFetching == null)
+
         val expected = FactDetailsData.Fail(TestException(""))
         val actual = repository.fetchFact(1)
         assertEquals(expected, actual)
+
+        val factAfterFetching = testCacheDataSource.getFact(1)
+        assertEquals(false, factAfterFetching == null)
+    }
+
+    @Test
+    fun test_fetch_fact_cloud_fail_cache_success_fact_doesnt_exists() = runBlocking {
+        val testCloudDataSource = TestFactCloudDataSource(false)
+        val testCacheDataSource = TestFactCacheDataSource(
+            success = true,
+            isFactAlreadyExists = false
+        )
+
+        val repository = FactRepository.Base(
+            testCloudDataSource,
+            testCacheDataSource,
+            FactDataToDbMapper.Base()
+        )
+
+        val factBeforeFetching = testCacheDataSource.getFact(1)
+        assertEquals(true, factBeforeFetching == null)
+
+        val expected = FactDetailsData.Fail(TestException(""))
+        val actual = repository.fetchFact(1)
+        assertEquals(expected, actual)
+
+        val factAfterFetching = testCacheDataSource.getFact(1)
+        assertEquals(true, factAfterFetching == null)
     }
 
     class TestFactCloudDataSource(private val success: Boolean) : FactCloudDataSource {
@@ -80,7 +186,21 @@ class BaseFactRepositoryTest {
             else throw TestException("")
     }
 
-    class TestFactCacheDataSource(private val success: Boolean) : FactCacheDataSource {
-        override fun saveFact(fact: FactDb) = if (success) Unit else throw TestException("")
+    class TestFactCacheDataSource(
+        private val success: Boolean,
+        isFactAlreadyExists: Boolean
+    ) : FactCacheDataSource {
+        private var isFactExists = isFactAlreadyExists
+
+        override fun saveFact(fact: FactDb) =
+            if (success) isFactExists = true else throw TestException("")
+
+        override fun getFact(number: Int) =
+            if (isFactExists)
+                FactDb(1, "1 is the loneliest number.", "20230115082232")
+            else null
+
+        override fun deleteFact(number: Int) =
+            if (success) isFactExists = false else throw TestException("")
     }
 }
