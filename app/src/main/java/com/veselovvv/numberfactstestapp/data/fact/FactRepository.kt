@@ -13,10 +13,10 @@ interface FactRepository {
         private val factMapper: FactDataToDbMapper
     ) : FactRepository {
         override suspend fun fetchFact(number: Int) = try {
-            if (cacheDataSource.getFact(number) != null) cacheDataSource.deleteFact(number)
-
             val fact = cloudDataSource.fetchFact(number)
             val factDb = factMapper.map(number, fact)
+
+            if (cacheDataSource.getFact(number) != null) cacheDataSource.deleteFact(number)
             cacheDataSource.saveFact(factDb)
             FactDetailsData.Success
         } catch (e: Exception) {
