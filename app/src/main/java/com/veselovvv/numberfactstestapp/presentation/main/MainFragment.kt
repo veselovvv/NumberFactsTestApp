@@ -4,9 +4,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.DividerItemDecoration
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.veselovvv.numberfactstestapp.R
 import com.veselovvv.numberfactstestapp.databinding.FragmentMainBinding
 import com.veselovvv.numberfactstestapp.presentation.core.BaseFragment
 import com.veselovvv.numberfactstestapp.presentation.fact.FactViewModel
@@ -47,12 +48,13 @@ class MainFragment : BaseFragment<FragmentMainBinding>() {
         }
 
         binding.getFactButton.setOnClickListener {
-            // TODO change to context dialog or something
             if (binding.numberEditText.text?.isEmpty() == true)
-                Toast.makeText(requireContext(), "The field is empty", Toast.LENGTH_SHORT).show()
+                MaterialAlertDialogBuilder(requireContext())
+                    .setTitle(getString(R.string.the_field_is_empty))
+                    .setMessage(getString(R.string.please_enter_a_number))
+                    .setPositiveButton(getString(R.string.ok)) { _, _ -> }
+                    .show()
             else {
-                //TODO add validation + enabling/disabling buttons etc
-                //TODO sort list of facts from new to old
                 factViewModel.observe(this) { factUi ->
                     factUi.map {
                         factsViewModel.fetchFacts() // reload list of facts from database if success

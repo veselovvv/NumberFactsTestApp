@@ -10,4 +10,7 @@
     <string name="something_went_wrong_message">Something went wrong. Please try again!</string>
     <string name="number_label">Number:</string>
     <string name="fact_label">Fact:</string>
+    <string name="the_field_is_empty">The field is empty!</string>
+    <string name="please_enter_a_number">Please enter a number!</string>
+    <string name="ok">OK</string>
 </resources>

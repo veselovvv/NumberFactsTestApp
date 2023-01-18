@@ -6,7 +6,7 @@ import com.veselovvv.numberfactstestapp.data.facts.ToFactMapper
 
 @Entity
 data class FactDb(
-    @PrimaryKey val number: Int, // TODO make bigger?
+    @PrimaryKey val number: Int,
     val fact: String,
     val currentDateTime: String
 ) {
