@@ -8,4 +8,8 @@
         android:id="@+id/mainFragment"
         android:name="com.veselovvv.numberfactstestapp.presentation.main.MainFragment"
         android:label="MainFragment" />
+    <fragment
+        android:id="@+id/factFragment"
+        android:name="com.veselovvv.numberfactstestapp.presentation.fact.FactFragment"
+        android:label="FactFragment" />
 </navigation>

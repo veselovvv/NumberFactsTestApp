@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.veselovvv.numberfactstestapp.di.core.CoreDomainModule
 import com.veselovvv.numberfactstestapp.domain.fact.FactDetailsDomainToUiMapper
 import com.veselovvv.numberfactstestapp.domain.fact.FetchFactUseCase
+import com.veselovvv.numberfactstestapp.presentation.facts.FactCache
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.launch
@@ -19,7 +20,8 @@ class FactViewModel @Inject constructor(
     @CoreDomainModule.IoDispatcher private val dispatchersIO: CoroutineDispatcher,
     @CoreDomainModule.MainDispatcher private val dispatchersMain: CoroutineDispatcher,
     private val fetchFactUseCase: FetchFactUseCase,
-    private val mapper: FactDetailsDomainToUiMapper
+    private val mapper: FactDetailsDomainToUiMapper,
+    private val factCache: FactCache
 ) : ViewModel() {
     fun fetchFact(number: Int) {
         communication.map(FactElementUi.Progress)
@@ -34,4 +36,7 @@ class FactViewModel @Inject constructor(
 
     fun observe(owner: LifecycleOwner, observer: Observer<FactElementUi>) =
         communication.observe(owner, observer)
+
+    fun getNumber() = factCache.readFactInfo().first
+    fun getFact() = factCache.readFactInfo().second
 }

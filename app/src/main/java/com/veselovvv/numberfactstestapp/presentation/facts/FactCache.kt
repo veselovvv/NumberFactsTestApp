@@ -3,21 +3,21 @@ package com.veselovvv.numberfactstestapp.presentation.facts
 import android.content.Context
 
 interface FactCache {
-    fun saveFactInfo(info: Pair<Int, String>)
-    fun readFactInfo(): Pair<Int, String>
+    fun saveFactInfo(info: Pair<String, String>)
+    fun readFactInfo(): Pair<String, String>
 
     class Base(context: Context) : FactCache {
         private val sharedPreferences =
             context.getSharedPreferences(FACT_INFO_FILENAME, Context.MODE_PRIVATE)
 
-        override fun saveFactInfo(info: Pair<Int, String>) =
+        override fun saveFactInfo(info: Pair<String, String>) =
             sharedPreferences.edit()
-                .putInt(NUMBER_KEY, info.first)
+                .putString(NUMBER_KEY, info.first)
                 .putString(FACT_KEY, info.second)
                 .apply()
 
         override fun readFactInfo() = Pair(
-            sharedPreferences.getInt(NUMBER_KEY, 0),
+            sharedPreferences.getString(NUMBER_KEY, "") ?: "",
             sharedPreferences.getString(FACT_KEY, "") ?: ""
         )
 

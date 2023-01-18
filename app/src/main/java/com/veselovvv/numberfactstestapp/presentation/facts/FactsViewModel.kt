@@ -46,7 +46,7 @@ class FactsViewModel @Inject constructor(
         }
     }
 
-    fun saveFactInfo(number: Int, fact: String) = factCache.saveFactInfo(Pair(number, fact))
+    fun saveFactInfo(number: String, fact: String) = factCache.saveFactInfo(Pair(number, fact))
 
     fun observe(owner: LifecycleOwner, observer: Observer<List<FactUi>>) =
         communication.observe(owner, observer)

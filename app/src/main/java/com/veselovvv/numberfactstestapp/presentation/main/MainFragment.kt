@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.veselovvv.numberfactstestapp.R
@@ -28,8 +29,9 @@ class MainFragment : BaseFragment<FragmentMainBinding>() {
 
         val adapter = FactsAdapter(object : FactsAdapter.FactListener {
             override fun showFact(number: Int, fact: String) {
-                factsViewModel.saveFactInfo(number, fact)
-                //TODO navigate(R.id.factFragment)
+                factsViewModel.saveFactInfo(number.toString(), fact)
+                requireActivity().findNavController(R.id.fragment_container)
+                    .navigate(R.id.factFragment)
             }
         })
 

@@ -2,6 +2,7 @@ package com.veselovvv.numberfactstestapp.di.core
 
 import android.content.Context
 import com.veselovvv.numberfactstestapp.core.ResourceProvider
+import com.veselovvv.numberfactstestapp.presentation.facts.FactCache
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -36,4 +37,7 @@ class CoreDomainModule {
     fun provideResourceProvider(
         @ApplicationContext context: Context
     ): ResourceProvider = ResourceProvider.Base(context)
+
+    @Provides
+    fun provideFactCache(@ApplicationContext context: Context): FactCache = FactCache.Base(context)
 }
