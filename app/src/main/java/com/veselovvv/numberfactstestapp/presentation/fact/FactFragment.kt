@@ -11,7 +11,7 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class FactFragment : BaseFragment<FragmentFactBinding>() {
-    private val viewModel: FactViewModel by viewModels() // TODO?
+    private val viewModel: FactViewModel by viewModels()
 
     override fun setupViewBinding(inflater: LayoutInflater, container: ViewGroup?) =
         FragmentFactBinding.inflate(inflater, container, false)

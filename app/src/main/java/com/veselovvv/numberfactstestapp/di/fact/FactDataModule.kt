@@ -20,7 +20,6 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 class FactDataModule {
-    // TODO move to core module?
     companion object {
         private const val BASE_URL = "http://numbersapi.com/"
     }

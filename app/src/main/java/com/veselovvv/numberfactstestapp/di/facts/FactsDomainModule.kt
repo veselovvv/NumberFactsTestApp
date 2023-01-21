@@ -47,6 +47,4 @@ class FactsDomainModule {
         resourceProvider: ResourceProvider,
         factMapper: FactDomainToUiMapper
     ): FactsDomainToUiMapper = BaseFactsDomainToUiMapper(resourceProvider, factMapper)
-
-    //TODO move to core module things that are used in different places
 }
