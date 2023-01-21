@@ -7,4 +7,8 @@ class TestFactRepository(private val exception: Exception? = null) : FactReposit
     override suspend fun fetchFact(number: Int) =
         if (exception == null) FactDetailsData.Success
         else FactDetailsData.Fail(exception)
+
+    override suspend fun fetchRandomFact() =
+        if (exception == null) FactDetailsData.Success
+        else FactDetailsData.Fail(exception)
 }

@@ -7,6 +7,7 @@ import com.veselovvv.numberfactstestapp.domain.facts.BaseFactDataToDomainMapper
 import com.veselovvv.numberfactstestapp.domain.facts.DeleteFactsUseCase
 import com.veselovvv.numberfactstestapp.domain.facts.FactsDomain
 import com.veselovvv.numberfactstestapp.domain.facts.FetchFactsUseCase
+import com.veselovvv.numberfactstestapp.presentation.TestFactCache
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
@@ -151,11 +152,6 @@ class FactsViewModelTest {
         override suspend fun execute() =
             if (success) FactsDomain.Success(listOf(), BaseFactDataToDomainMapper())
             else FactsDomain.Fail(ErrorType.GENERIC_ERROR)
-    }
-
-    class TestFactCache : FactCache {
-        override fun saveFactInfo(info: Pair<Int, String>) = Unit
-        override fun readFactInfo() = Pair(1, "1 is the loneliest number.")
     }
 
     companion object {
