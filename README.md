@@ -5,7 +5,7 @@ This app allows you to get a fact about an entered number or a random number fro
 
 The app has 2 screens.
 
-Main screen is divided into two parts. The upper part has a field for entering a number and 2 buttons (for getting a fact about an entered number and random number). 
+The main screen is divided into two parts. The upper part has a field for entering a number and 2 buttons (for getting a fact about an entered number and a random number). 
 The lower part displays the history of facts. Clicking on a fact opens a second screen.
 
 The second screen displays a number and a fact.
