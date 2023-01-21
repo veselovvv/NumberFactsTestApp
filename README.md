@@ -1,5 +1,5 @@
 # NumberFactsTestApp
-Android Test App using Kotlin, Clean Architecture, MVVM, ViewModel, LiveData, Coroutines, Hilt, Navigation Component, View Binding, Retrofit, Room, and Material Design. 
+🔢 Android Test App using Kotlin, Clean Architecture, MVVM, ViewModel, LiveData, Coroutines, Hilt, Navigation Component, View Binding, Retrofit, Room, and Material Design. 
 
 This app allows you to get a fact about an entered number or a random number from this API - http://numbersapi.com/. The history of facts is stored in a database and can be cleared.
 
