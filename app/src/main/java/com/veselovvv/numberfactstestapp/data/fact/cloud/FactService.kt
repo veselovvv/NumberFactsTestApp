@@ -7,4 +7,7 @@ import retrofit2.http.Path
 interface FactService {
     @GET("{number}")
     suspend fun fetchFact(@Path("number") number: Int): ResponseBody
+
+    @GET("random/math")
+    suspend fun fetchRandomFact(): ResponseBody
 }

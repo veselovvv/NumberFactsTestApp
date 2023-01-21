@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.veselovvv.numberfactstestapp.di.core.CoreDomainModule
 import com.veselovvv.numberfactstestapp.domain.fact.FactDetailsDomainToUiMapper
 import com.veselovvv.numberfactstestapp.domain.fact.FetchFactUseCase
+import com.veselovvv.numberfactstestapp.domain.fact.FetchRandomFactUseCase
 import com.veselovvv.numberfactstestapp.presentation.facts.FactCache
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
@@ -20,6 +21,7 @@ class FactViewModel @Inject constructor(
     @CoreDomainModule.IoDispatcher private val dispatchersIO: CoroutineDispatcher,
     @CoreDomainModule.MainDispatcher private val dispatchersMain: CoroutineDispatcher,
     private val fetchFactUseCase: FetchFactUseCase,
+    private val fetchRandomFactUseCase: FetchRandomFactUseCase,
     private val mapper: FactDetailsDomainToUiMapper,
     private val factCache: FactCache
 ) : ViewModel() {
@@ -27,6 +29,17 @@ class FactViewModel @Inject constructor(
         communication.map(FactElementUi.Progress)
         viewModelScope.launch(dispatchersIO) {
             val factDomain = fetchFactUseCase.execute(number)
+            val factUi = factDomain.map(mapper)
+            withContext(dispatchersMain) {
+                factUi.map(communication)
+            }
+        }
+    }
+
+    fun fetchRandomFact() {
+        communication.map(FactElementUi.Progress)
+        viewModelScope.launch(dispatchersIO) {
+            val factDomain = fetchRandomFactUseCase.execute()
             val factUi = factDomain.map(mapper)
             withContext(dispatchersMain) {
                 factUi.map(communication)

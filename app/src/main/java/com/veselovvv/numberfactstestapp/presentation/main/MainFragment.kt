@@ -57,17 +57,25 @@ class MainFragment : BaseFragment<FragmentMainBinding>() {
                     .setPositiveButton(getString(R.string.ok)) { _, _ -> }
                     .show()
             else {
-                factViewModel.observe(this) { factUi ->
-                    factUi.map {
-                        factsViewModel.fetchFacts() // reload list of facts from database if success
-                    }
-                    factUi.map(binding.progressLayout.root)
-                    factUi.map(binding.failLayout.root, binding.failLayout.errorMessageTextView)
-                }
-
+                observeFact()
                 val enteredNumber = binding.numberEditText.text.toString().toInt()
                 factViewModel.fetchFact(enteredNumber)
             }
+        }
+
+        binding.getRandomFactButton.setOnClickListener {
+            observeFact()
+            factViewModel.fetchRandomFact()
+        }
+    }
+
+    fun observeFact() {
+        factViewModel.observe(this) { factUi ->
+            factUi.map {
+                factsViewModel.fetchFacts() // reload list of facts from database if success
+            }
+            factUi.map(binding.progressLayout.root)
+            factUi.map(binding.failLayout.root, binding.failLayout.errorMessageTextView)
         }
     }
 }

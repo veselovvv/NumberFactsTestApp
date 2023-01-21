@@ -6,6 +6,7 @@ import com.veselovvv.numberfactstestapp.data.fact.FactRepository
 import com.veselovvv.numberfactstestapp.domain.fact.BaseFactDetailsDataToDomainMapper
 import com.veselovvv.numberfactstestapp.domain.fact.FactDetailsDomainToUiMapper
 import com.veselovvv.numberfactstestapp.domain.fact.FetchFactUseCase
+import com.veselovvv.numberfactstestapp.domain.fact.FetchRandomFactUseCase
 import com.veselovvv.numberfactstestapp.presentation.fact.BaseFactDetailsDomainToUiMapper
 import com.veselovvv.numberfactstestapp.presentation.fact.FactCommunication
 import dagger.Module
@@ -28,6 +29,12 @@ class FactDomainModule {
         repository: FactRepository,
         mapper: FactDetailsDataToDomainMapper
     ): FetchFactUseCase = FetchFactUseCase.Base(repository, mapper)
+
+    @Provides
+    fun provideFetchRandomFactUseCase(
+        repository: FactRepository,
+        mapper: FactDetailsDataToDomainMapper
+    ): FetchRandomFactUseCase = FetchRandomFactUseCase.Base(repository, mapper)
 
     @Provides
     fun provideFactDetailsDomainToUiMapper(
