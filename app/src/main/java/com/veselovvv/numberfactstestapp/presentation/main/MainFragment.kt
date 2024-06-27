@@ -4,15 +4,27 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
-import androidx.recyclerview.widget.DividerItemDecoration
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.veselovvv.numberfactstestapp.R
 import com.veselovvv.numberfactstestapp.databinding.FragmentMainBinding
 import com.veselovvv.numberfactstestapp.presentation.core.BaseFragment
 import com.veselovvv.numberfactstestapp.presentation.fact.FactViewModel
-import com.veselovvv.numberfactstestapp.presentation.facts.FactsAdapter
+import com.veselovvv.numberfactstestapp.presentation.facts.FactUi
 import com.veselovvv.numberfactstestapp.presentation.facts.FactsViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -27,21 +39,14 @@ class MainFragment : BaseFragment<FragmentMainBinding>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val adapter = FactsAdapter(object : FactsAdapter.FactListener {
-            override fun showFact(number: Int, fact: String) {
-                factsViewModel.saveFactInfo(number.toString(), fact)
-                requireActivity().findNavController(R.id.fragment_container)
-                    .navigate(R.id.factFragment)
-            }
-        })
-
-        binding.factsRecyclerView.apply {
-            this.adapter = adapter
-            addItemDecoration(DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL))
-        }
-
         factsViewModel.observe(this) { facts ->
-            adapter.update(facts)
+            binding.factsListView.setContent {
+                FactsListView(facts) { number, fact ->
+                    factsViewModel.saveFactInfo(number.toString(), fact)
+                    requireActivity().findNavController(R.id.fragment_container)
+                        .navigate(R.id.factFragment)
+                }
+            }
         }
         factsViewModel.fetchFacts()
 
@@ -77,5 +82,35 @@ class MainFragment : BaseFragment<FragmentMainBinding>() {
             factUi.map(binding.progressLayout.root)
             factUi.map(binding.failLayout.root, binding.failLayout.errorMessageTextView)
         }
+    }
+}
+
+@Composable
+fun FactsListView(facts: List<FactUi>, onFactClick: (Int, String) -> Unit) {
+    LazyColumn(modifier = Modifier.fillMaxSize()) {
+        items(facts) { fact ->
+            fact.map(onFactClick)
+        }
+    }
+}
+
+@Composable
+fun FactBaseView(number: Int, fact: String, onFactClick: (Int, String) -> Unit) {
+    Column(modifier = Modifier.clickable {
+        onFactClick(number, fact)
+    }) {
+        Text(
+            text = number.toString(),
+            fontSize = 18.sp,
+            fontWeight = FontWeight.Bold,
+            modifier = Modifier.padding(8.dp)
+        )
+        Text(
+            text = fact,
+            fontSize = 18.sp,
+            modifier = Modifier.padding(8.dp),
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis
+        )
     }
 }

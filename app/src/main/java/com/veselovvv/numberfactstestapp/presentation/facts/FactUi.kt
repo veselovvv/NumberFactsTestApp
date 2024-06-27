@@ -1,28 +1,36 @@
 package com.veselovvv.numberfactstestapp.presentation.facts
 
+import androidx.compose.runtime.Composable
+import com.veselovvv.numberfactstestapp.presentation.core.FailScreen
+import com.veselovvv.numberfactstestapp.presentation.core.NoHistoryScreen
+import com.veselovvv.numberfactstestapp.presentation.core.ProgressScreen
+import com.veselovvv.numberfactstestapp.presentation.main.FactBaseView
+
 sealed class FactUi {
-    open fun map(mapper: UIMapper) = Unit
-    open fun showFact(factListener: FactsAdapter.FactListener) = Unit
+    @Composable
+    abstract fun map(onFactClick: (Int, String) -> Unit)
 
-    object Progress : FactUi()
+    object Progress : FactUi() {
+        @Composable
+        override fun map(onFactClick: (Int, String) -> Unit) = ProgressScreen()
+    }
 
-    object NoHistory : FactUi()
+    object NoHistory : FactUi() {
+        @Composable
+        override fun map(onFactClick: (Int, String) -> Unit) = NoHistoryScreen()
+    }
 
     data class Base(
         private val number: Int,
         private val fact: String
     ) : FactUi() {
-        override fun map(mapper: UIMapper) = mapper.map(number, fact)
-        override fun showFact(factListener: FactsAdapter.FactListener) =
-            factListener.showFact(number, fact)
+        @Composable
+        override fun map(onFactClick: (Int, String) -> Unit) =
+            FactBaseView(number, fact, onFactClick)
     }
 
     data class Fail(private val errorMessage: String) : FactUi() {
-        override fun map(mapper: UIMapper) = mapper.map(errorMessage)
-    }
-
-    interface UIMapper {
-        fun map(number: Int, fact: String) = Unit
-        fun map(errorMessage: String) = Unit
+        @Composable
+        override fun map(onFactClick: (Int, String) -> Unit) = FailScreen(errorMessage)
     }
 }
