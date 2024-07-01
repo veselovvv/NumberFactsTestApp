@@ -5,21 +5,40 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.AlertDialog
+import androidx.compose.material.TextField
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonColors
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.fragment.app.viewModels
-import androidx.navigation.findNavController
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.veselovvv.numberfactstestapp.R
 import com.veselovvv.numberfactstestapp.databinding.FragmentMainBinding
 import com.veselovvv.numberfactstestapp.presentation.core.BaseFragment
@@ -39,57 +58,191 @@ class MainFragment : BaseFragment<FragmentMainBinding>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        factsViewModel.observe(this) { facts ->
-            binding.factsListView.setContent {
-                FactsListView(facts) { number, fact ->
-                    factsViewModel.saveFactInfo(number.toString(), fact)
-                    requireActivity().findNavController(R.id.fragment_container)
-                        .navigate(R.id.factFragment)
-                }
-            }
-        }
-        factsViewModel.fetchFacts()
-
-        binding.deleteHistoryImageView.setOnClickListener {
-            factsViewModel.deleteFacts()
-        }
-
-        binding.getFactButton.setOnClickListener {
-            if (binding.numberEditText.text?.isEmpty() == true)
-                MaterialAlertDialogBuilder(requireContext())
-                    .setTitle(getString(R.string.the_field_is_empty))
-                    .setMessage(getString(R.string.please_enter_a_number))
-                    .setPositiveButton(getString(R.string.ok)) { _, _ -> }
-                    .show()
-            else {
-                observeFact()
-                val enteredNumber = binding.numberEditText.text.toString().toInt()
-                factViewModel.fetchFact(enteredNumber)
-            }
-        }
-
-        binding.getRandomFactButton.setOnClickListener {
-            observeFact()
-            factViewModel.fetchRandomFact()
-        }
-    }
-
-    fun observeFact() {
-        factViewModel.observe(this) { factUi ->
-            factUi.map {
-                factsViewModel.fetchFacts() // reload list of facts from database if success
-            }
-            factUi.map(binding.progressLayout.root)
-            factUi.map(binding.failLayout.root, binding.failLayout.errorMessageTextView)
+        binding.mainScreenPart.setContent {
+            MainScreen(factsViewModel, factViewModel)
         }
     }
 }
 
 @Composable
-fun FactsListView(facts: List<FactUi>, onFactClick: (Int, String) -> Unit) {
+fun MainScreen(
+    factsViewModel: FactsViewModel,
+    factViewModel: FactViewModel
+) {
+    val factsUiState = factsViewModel.getFactsLiveData().observeAsState(emptyList())
+    val factElementUiState = factViewModel.getFactElementUiLiveData().observeAsState()
+
+    var textFieldState by remember {
+        mutableStateOf("")
+    }
+
+    LaunchedEffect(true) { // code in this block runs only once since key1 = true
+        factsViewModel.fetchFacts()
+    }
+
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(8.dp)
+    ) {
+        EnterNumberTextField(textFieldState = textFieldState) { text ->
+            textFieldState = text
+        }
+        GetFactButton(textFieldState) {
+            factViewModel.fetchFact(textFieldState.toInt()) // TODO user could input ',', '-' etc
+        }
+        GetFactAboutRandomNumberButton {
+            factViewModel.fetchRandomFact()
+        }
+        HistoryLabelAndDeleteIconSection {
+            factsViewModel.deleteFacts()
+        }
+        FactsList(factsUiState.value) { number, fact ->
+            factsViewModel.saveFactInfo(number.toString(), fact)
+            /* todo requireActivity().findNavController(R.id.fragment_container)
+                .navigate(R.id.factFragment)*/
+        }
+    }
+
+    factElementUiState.value?.map {
+        factsViewModel.fetchFacts() // reload list of facts from database if success
+    }
+}
+
+@Composable
+fun EnterNumberTextField(textFieldState: String, onTextFieldValueChange: (String) -> Unit) {
+    TextField(
+        value = textFieldState,
+        label = {
+            Text(text = stringResource(id = R.string.enter_a_number_hint))
+        },
+        onValueChange = { text ->
+            onTextFieldValueChange(text)
+        },
+        singleLine = true,
+        modifier = Modifier.fillMaxWidth(),
+        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+    )
+}
+
+@Composable
+fun GetFactButton(textFieldState: String, onButtonClick: () -> Unit) {
+    var openAlertDialog by remember {
+        mutableStateOf(false)
+    }
+
+    if (openAlertDialog) {
+        TextFieldIsEmptyAlertDialog(
+            onDismiss = {
+                openAlertDialog = false
+            },
+            onConfirm = {
+                openAlertDialog = false
+            }
+        )
+    }
+
+    Button(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 8.dp),
+        onClick = {
+            if (textFieldState.isEmpty())
+                openAlertDialog = true
+            else onButtonClick()
+        },
+        colors = ButtonColors( // TODO change to Compose colors + check in different themes
+            containerColor = Color(0xFFFF9800),
+            contentColor = Color.White,
+            disabledContainerColor = Color.Gray,
+            disabledContentColor = Color.LightGray
+        )
+    ) {
+        Text(text = stringResource(id = R.string.get_fact))
+    }
+}
+
+@Composable
+fun TextFieldIsEmptyAlertDialog(onDismiss: () -> Unit, onConfirm: () -> Unit) {
+    AlertDialog(
+        shape = RoundedCornerShape(15.dp),
+        title = {
+            Text(
+                text = stringResource(id = R.string.the_field_is_empty),
+                fontSize = 18.sp,
+                fontWeight = FontWeight.Bold
+            )
+        },
+        text = {
+            Text(
+                text = stringResource(id = R.string.please_enter_a_number),
+                fontSize = 18.sp
+            )
+        },
+        onDismissRequest = { onDismiss() },
+        confirmButton = {
+            TextButton(
+                onClick = { onConfirm() }
+            ) {
+                Text(
+                    text = stringResource(id = R.string.ok),
+                    fontSize = 18.sp
+                )
+            }
+        }
+    )
+}
+
+@Composable
+fun GetFactAboutRandomNumberButton(onButtonClick: () -> Unit) {
+    Button(
+        modifier = Modifier.fillMaxWidth(),
+        onClick = {
+            onButtonClick()
+        },
+        colors = ButtonColors( // TODO change to Compose colors + check in different themes
+            containerColor = Color(0xFFFF9800),
+            contentColor = Color.White,
+            disabledContainerColor = Color.Gray,
+            disabledContentColor = Color.LightGray
+        )
+    ) {
+        Text(text = stringResource(id = R.string.get_fact_about_random_number))
+    }
+}
+
+@Composable
+fun HistoryLabelAndDeleteIconSection(onDeleteHistoryIconClick: () -> Unit) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 8.dp),
+        horizontalArrangement = Arrangement.SpaceBetween
+    ) {
+        Text(
+            text = stringResource(id = R.string.history),
+            fontSize = 18.sp,
+            fontWeight = FontWeight.Bold
+        )
+        Icon(
+            painter = painterResource(
+                id = R.drawable.ic_baseline_delete_24),
+            contentDescription = stringResource(R.string.delete_history_content_description),
+            tint = Color.Red,
+            modifier = Modifier.clickable {
+                onDeleteHistoryIconClick()
+            }
+        )
+    }
+}
+
+@Composable
+fun FactsList(facts: List<FactUi>, onFactClick: (Int, String) -> Unit) {
     LazyColumn(modifier = Modifier.fillMaxSize()) {
-        items(facts) { fact ->
-            fact.map(onFactClick)
+        items(facts) { factUI ->
+            factUI.map { number, fact ->
+                onFactClick(number, fact)
+            }
         }
     }
 }

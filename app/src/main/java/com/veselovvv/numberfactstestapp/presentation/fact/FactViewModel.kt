@@ -47,8 +47,11 @@ class FactViewModel @Inject constructor(
         }
     }
 
+    //todo
     fun observe(owner: LifecycleOwner, observer: Observer<FactElementUi>) =
         communication.observe(owner, observer)
+
+    fun getFactElementUiLiveData() = communication.getLiveData()
 
     fun getNumber() = factCache.readFactInfo().first
     fun getFact() = factCache.readFactInfo().second

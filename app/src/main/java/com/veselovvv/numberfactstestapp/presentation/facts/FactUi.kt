@@ -3,17 +3,11 @@ package com.veselovvv.numberfactstestapp.presentation.facts
 import androidx.compose.runtime.Composable
 import com.veselovvv.numberfactstestapp.presentation.core.FailScreen
 import com.veselovvv.numberfactstestapp.presentation.core.NoHistoryScreen
-import com.veselovvv.numberfactstestapp.presentation.core.ProgressScreen
 import com.veselovvv.numberfactstestapp.presentation.main.FactBaseView
 
 sealed class FactUi {
     @Composable
     abstract fun map(onFactClick: (Int, String) -> Unit)
-
-    object Progress : FactUi() {
-        @Composable
-        override fun map(onFactClick: (Int, String) -> Unit) = ProgressScreen()
-    }
 
     object NoHistory : FactUi() {
         @Composable

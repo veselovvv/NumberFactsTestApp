@@ -25,7 +25,6 @@ class FactsViewModel @Inject constructor(
     private val factCache: FactCache
 ) : ViewModel() {
     fun fetchFacts() {
-        communication.map(listOf(FactUi.Progress))
         viewModelScope.launch(dispatchersIO) {
             val factsDomain = fetchFactsUseCase.execute()
             val factsUi = factsDomain.map(mapper)
@@ -36,7 +35,6 @@ class FactsViewModel @Inject constructor(
     }
 
     fun deleteFacts() {
-        communication.map(listOf(FactUi.Progress))
         viewModelScope.launch(dispatchersIO) {
             val factsDomain = deleteFactsUseCase.execute()
             val factsUi = factsDomain.map(mapper)
@@ -48,6 +46,9 @@ class FactsViewModel @Inject constructor(
 
     fun saveFactInfo(number: String, fact: String) = factCache.saveFactInfo(Pair(number, fact))
 
+    fun getFactsLiveData() = communication.getLiveData()
+
+    //todo
     fun observe(owner: LifecycleOwner, observer: Observer<List<FactUi>>) =
         communication.observe(owner, observer)
 }

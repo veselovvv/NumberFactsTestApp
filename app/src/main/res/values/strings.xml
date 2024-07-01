@@ -13,4 +13,5 @@
     <string name="the_field_is_empty">The field is empty!</string>
     <string name="please_enter_a_number">Please enter a number!</string>
     <string name="ok">OK</string>
+    <string name="delete_history_content_description">Delete history</string>
 </resources>
