@@ -1,7 +1,5 @@
 package com.veselovvv.numberfactstestapp.presentation.facts
 
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.veselovvv.numberfactstestapp.di.core.CoreDomainModule
@@ -47,8 +45,4 @@ class FactsViewModel @Inject constructor(
     fun saveFactInfo(number: String, fact: String) = factCache.saveFactInfo(Pair(number, fact))
 
     fun getFactsLiveData() = communication.getLiveData()
-
-    //todo
-    fun observe(owner: LifecycleOwner, observer: Observer<List<FactUi>>) =
-        communication.observe(owner, observer)
 }

@@ -1,7 +1,5 @@
 package com.veselovvv.numberfactstestapp.presentation.fact
 
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.veselovvv.numberfactstestapp.di.core.CoreDomainModule
@@ -46,10 +44,6 @@ class FactViewModel @Inject constructor(
             }
         }
     }
-
-    //todo
-    fun observe(owner: LifecycleOwner, observer: Observer<FactElementUi>) =
-        communication.observe(owner, observer)
 
     fun getFactElementUiLiveData() = communication.getLiveData()
 
