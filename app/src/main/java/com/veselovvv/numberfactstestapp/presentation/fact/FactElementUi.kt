@@ -6,20 +6,32 @@ import com.veselovvv.numberfactstestapp.presentation.core.ProgressScreen
 
 sealed class FactElementUi {
     @Composable
-    open fun map(onSuccess: () -> Unit) = Unit
+    open fun map(
+        onSuccess: () -> Unit,
+        onRetryButtonClick: () -> Unit
+    ) = Unit
 
     object Progress : FactElementUi() {
         @Composable
-        override fun map(onSuccess: () -> Unit) = ProgressScreen()
+        override fun map(
+            onSuccess: () -> Unit,
+            onRetryButtonClick: () -> Unit
+        ) = ProgressScreen()
     }
 
     object Success : FactElementUi() {
         @Composable
-        override fun map(onSuccess: () -> Unit) = onSuccess()
+        override fun map(
+            onSuccess: () -> Unit,
+            onRetryButtonClick: () -> Unit
+        ) = onSuccess()
     }
 
     data class Fail(private val errorMessage: String) : FactElementUi() {
         @Composable
-        override fun map(onSuccess: () -> Unit) = FailScreen(errorMessage)
+        override fun map(
+            onSuccess: () -> Unit,
+            onRetryButtonClick: () -> Unit
+        ) = FailScreen(errorMessage, onRetryButtonClick)
     }
 }

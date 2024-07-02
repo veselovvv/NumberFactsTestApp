@@ -14,4 +14,5 @@
     <string name="please_enter_a_number">Please enter a number!</string>
     <string name="ok">OK</string>
     <string name="delete_history_content_description">Delete history</string>
+    <string name="retry">Retry</string>
 </resources>

@@ -7,11 +7,17 @@ import com.veselovvv.numberfactstestapp.presentation.main.FactBaseView
 
 sealed class FactUi {
     @Composable
-    abstract fun map(onFactClick: (Int, String) -> Unit)
+    abstract fun map(
+        onFactClick: (Int, String) -> Unit,
+        onRetryButtonClick: () -> Unit
+    )
 
     object NoHistory : FactUi() {
         @Composable
-        override fun map(onFactClick: (Int, String) -> Unit) = NoHistoryScreen()
+        override fun map(
+            onFactClick: (Int, String) -> Unit,
+            onRetryButtonClick: () -> Unit
+        ) = NoHistoryScreen()
     }
 
     data class Base(
@@ -19,12 +25,17 @@ sealed class FactUi {
         private val fact: String
     ) : FactUi() {
         @Composable
-        override fun map(onFactClick: (Int, String) -> Unit) =
-            FactBaseView(number, fact, onFactClick)
+        override fun map(
+            onFactClick: (Int, String) -> Unit,
+            onRetryButtonClick: () -> Unit
+        ) = FactBaseView(number, fact, onFactClick)
     }
 
     data class Fail(private val errorMessage: String) : FactUi() {
         @Composable
-        override fun map(onFactClick: (Int, String) -> Unit) = FailScreen(errorMessage)
+        override fun map(
+            onFactClick: (Int, String) -> Unit,
+            onRetryButtonClick: () -> Unit
+        ) = FailScreen(errorMessage, onRetryButtonClick)
     }
 }

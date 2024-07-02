@@ -75,15 +75,26 @@ fun MainScreen(
         HistoryLabelAndDeleteIconSection {
             factsViewModel.deleteFacts()
         }
-        FactsList(factsUiState.value) { number, fact ->
-            factsViewModel.saveFactInfo(number.toString(), fact)
-            navController.navigate(Routes.FactDetails.getRoute())
-        }
+        FactsList(
+            facts = factsUiState.value,
+            onFactClick = { number, fact ->
+                factsViewModel.saveFactInfo(number.toString(), fact)
+                navController.navigate(Routes.FactDetails.getRoute())
+            },
+            onRetryButtonClick = {
+                factsViewModel.fetchFacts()
+            }
+        )
     }
 
-    factElementUiState.value?.map {
-        factsViewModel.fetchFacts() // reload list of facts from database if success
-    }
+    factElementUiState.value?.map(
+        onSuccess = {
+            factsViewModel.fetchFacts() // reload list of facts from database if success
+        },
+        onRetryButtonClick = {
+            factsViewModel.fetchFacts()
+        }
+    )
 }
 
 @Composable
@@ -156,10 +167,10 @@ fun TextFieldIsEmptyAlertDialog(onDismiss: () -> Unit, onConfirm: () -> Unit) {
                 fontSize = 18.sp
             )
         },
-        onDismissRequest = { onDismiss() },
+        onDismissRequest = onDismiss,
         confirmButton = {
             TextButton(
-                onClick = { onConfirm() }
+                onClick = onConfirm
             ) {
                 Text(
                     text = stringResource(id = R.string.ok),
@@ -174,9 +185,7 @@ fun TextFieldIsEmptyAlertDialog(onDismiss: () -> Unit, onConfirm: () -> Unit) {
 fun GetFactAboutRandomNumberButton(onButtonClick: () -> Unit) {
     Button(
         modifier = Modifier.fillMaxWidth(),
-        onClick = {
-            onButtonClick()
-        },
+        onClick = onButtonClick,
         colors = ButtonColors( // TODO change to Compose colors + check in different themes
             containerColor = Color(0xFFFF9800),
             contentColor = Color.White,
@@ -202,8 +211,7 @@ fun HistoryLabelAndDeleteIconSection(onDeleteHistoryIconClick: () -> Unit) {
             fontWeight = FontWeight.Bold
         )
         Icon(
-            painter = painterResource(
-                id = R.drawable.ic_baseline_delete_24),
+            painter = painterResource(id = R.drawable.ic_baseline_delete_24),
             contentDescription = stringResource(R.string.delete_history_content_description),
             tint = Color.Red,
             modifier = Modifier.clickable {
@@ -214,12 +222,19 @@ fun HistoryLabelAndDeleteIconSection(onDeleteHistoryIconClick: () -> Unit) {
 }
 
 @Composable
-fun FactsList(facts: List<FactUi>, onFactClick: (Int, String) -> Unit) {
+fun FactsList(
+    facts: List<FactUi>,
+    onFactClick: (Int, String) -> Unit,
+    onRetryButtonClick: () -> Unit
+) {
     LazyColumn(modifier = Modifier.fillMaxSize()) {
         items(facts) { factUI ->
-            factUI.map { number, fact ->
-                onFactClick(number, fact)
-            }
+            factUI.map(
+                onFactClick = { number, fact ->
+                    onFactClick(number, fact)
+                },
+                onRetryButtonClick = onRetryButtonClick
+            )
         }
     }
 }
