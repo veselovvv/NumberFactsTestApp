@@ -1,7 +1,7 @@
 package com.veselovvv.numberfactstestapp.presentation.facts
 
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.Observer
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 
 class TestFactsCommunication : FactsCommunication {
     private var facts = listOf<FactUi>()
@@ -12,5 +12,5 @@ class TestFactsCommunication : FactsCommunication {
         this.facts = facts
     }
 
-    override fun observe(owner: LifecycleOwner, observer: Observer<List<FactUi>>) = Unit
+    override fun getLiveData(): LiveData<List<FactUi>> = MutableLiveData()
 }
