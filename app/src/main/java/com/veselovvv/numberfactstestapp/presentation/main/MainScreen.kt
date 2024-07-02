@@ -1,9 +1,5 @@
 package com.veselovvv.numberfactstestapp.presentation.main
 
-import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -38,36 +34,18 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.fragment.app.viewModels
+import androidx.navigation.NavController
 import com.veselovvv.numberfactstestapp.R
-import com.veselovvv.numberfactstestapp.databinding.FragmentMainBinding
-import com.veselovvv.numberfactstestapp.presentation.core.BaseFragment
+import com.veselovvv.numberfactstestapp.presentation.core.Routes
 import com.veselovvv.numberfactstestapp.presentation.fact.FactViewModel
 import com.veselovvv.numberfactstestapp.presentation.facts.FactUi
 import com.veselovvv.numberfactstestapp.presentation.facts.FactsViewModel
-import dagger.hilt.android.AndroidEntryPoint
-
-@AndroidEntryPoint
-class MainFragment : BaseFragment<FragmentMainBinding>() {
-    private val factsViewModel: FactsViewModel by viewModels()
-    private val factViewModel: FactViewModel by viewModels()
-
-    override fun setupViewBinding(inflater: LayoutInflater, container: ViewGroup?) =
-        FragmentMainBinding.inflate(inflater, container, false)
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        binding.mainScreenPart.setContent {
-            MainScreen(factsViewModel, factViewModel)
-        }
-    }
-}
 
 @Composable
 fun MainScreen(
     factsViewModel: FactsViewModel,
-    factViewModel: FactViewModel
+    factViewModel: FactViewModel,
+    navController: NavController
 ) {
     val factsUiState = factsViewModel.getFactsLiveData().observeAsState(emptyList())
     val factElementUiState = factViewModel.getFactElementUiLiveData().observeAsState()
@@ -99,8 +77,7 @@ fun MainScreen(
         }
         FactsList(factsUiState.value) { number, fact ->
             factsViewModel.saveFactInfo(number.toString(), fact)
-            /* todo requireActivity().findNavController(R.id.fragment_container)
-                .navigate(R.id.factFragment)*/
+            navController.navigate(Routes.FactDetails.getRoute())
         }
     }
 

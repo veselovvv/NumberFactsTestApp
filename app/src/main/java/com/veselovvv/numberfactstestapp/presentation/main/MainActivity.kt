@@ -1,28 +1,40 @@
 package com.veselovvv.numberfactstestapp.presentation.main
 
 import android.os.Bundle
+import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.findNavController
-import com.veselovvv.numberfactstestapp.R
-import com.veselovvv.numberfactstestapp.databinding.ActivityMainBinding
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import com.veselovvv.numberfactstestapp.presentation.core.Routes
+import com.veselovvv.numberfactstestapp.presentation.fact.FactDetailsScreen
+import com.veselovvv.numberfactstestapp.presentation.fact.FactViewModel
+import com.veselovvv.numberfactstestapp.presentation.facts.FactsViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
-    private var _binding: ActivityMainBinding? = null
-    private val binding get() = _binding!!
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        _binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
 
-        val navController = findNavController(R.id.fragment_container)
-        navController.navigate(R.id.mainFragment)
-    }
+        setContent {
+            val factsViewModel = hiltViewModel<FactsViewModel>()
+            val factViewModel = hiltViewModel<FactViewModel>()
+            val navController = rememberNavController()
 
-    override fun onDestroy() {
-        super.onDestroy()
-        _binding = null
+            NavHost(navController = navController, startDestination = Routes.Main.getRoute()) {
+                composable(Routes.Main.getRoute()) {
+                    MainScreen(
+                        factsViewModel = factsViewModel,
+                        factViewModel = factViewModel,
+                        navController = navController
+                    )
+                }
+                composable(Routes.FactDetails.getRoute()) {
+                    FactDetailsScreen(viewModel = factViewModel)
+                }
+            }
+        }
     }
 }

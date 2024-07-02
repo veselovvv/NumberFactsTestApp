@@ -1,7 +1,7 @@
 package com.veselovvv.numberfactstestapp.presentation.fact
 
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -13,8 +13,8 @@ import androidx.compose.ui.unit.sp
 import com.veselovvv.numberfactstestapp.R
 
 @Composable
-fun FactDetailsScreen(number: String, fact: String) {
-    Column(modifier = Modifier.fillMaxWidth()) {
+fun FactDetailsScreen(viewModel: FactViewModel) {
+    Column(modifier = Modifier.fillMaxSize()) {
         Text(
             text = stringResource(id = R.string.number_label),
             fontSize = 18.sp,
@@ -22,7 +22,7 @@ fun FactDetailsScreen(number: String, fact: String) {
             modifier = Modifier.padding(8.dp)
         )
         Text(
-            text = number,
+            text = viewModel.getNumber(),
             fontSize = 18.sp,
             modifier = Modifier.padding(8.dp)
         )
@@ -33,7 +33,7 @@ fun FactDetailsScreen(number: String, fact: String) {
             modifier = Modifier.padding(start = 8.dp, top = 24.dp, end = 8.dp, bottom = 8.dp)
         )
         Text(
-            text = fact,
+            text = viewModel.getFact(),
             fontSize = 18.sp,
             modifier = Modifier.padding(8.dp)
         )
