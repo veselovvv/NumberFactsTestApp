@@ -34,6 +34,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.text.isDigitsOnly
 import androidx.navigation.NavController
 import com.veselovvv.numberfactstestapp.R
 import com.veselovvv.numberfactstestapp.presentation.core.Routes
@@ -54,8 +55,24 @@ fun MainScreen(
         mutableStateOf("")
     }
 
+    var openAlertDialog by remember {
+        mutableStateOf(false)
+    }
+
     LaunchedEffect(true) { // code in this block runs only once since key1 = true
         factsViewModel.fetchFacts()
+    }
+
+    if (openAlertDialog) {
+        AlertDialog(
+            title = stringResource(id = R.string.text_field_must_contain_a_number),
+            onDismiss = {
+                openAlertDialog = false
+            },
+            onConfirm = {
+                openAlertDialog = false
+            }
+        )
     }
 
     Column(
@@ -67,7 +84,11 @@ fun MainScreen(
             textFieldState = text
         }
         GetFactButton(textFieldState) {
-            factViewModel.fetchFact(textFieldState.toInt()) // TODO user could input ',', '-' etc
+            if (textFieldState.isDigitsOnly())
+                factViewModel.fetchFact(textFieldState.toInt())
+            else
+                openAlertDialog = true
+
         }
         GetFactAboutRandomNumberButton {
             factViewModel.fetchRandomFact()
@@ -120,7 +141,8 @@ fun GetFactButton(textFieldState: String, onButtonClick: () -> Unit) {
     }
 
     if (openAlertDialog) {
-        TextFieldIsEmptyAlertDialog(
+        AlertDialog(
+            title = stringResource(id = R.string.the_field_is_empty),
             onDismiss = {
                 openAlertDialog = false
             },
@@ -151,12 +173,16 @@ fun GetFactButton(textFieldState: String, onButtonClick: () -> Unit) {
 }
 
 @Composable
-fun TextFieldIsEmptyAlertDialog(onDismiss: () -> Unit, onConfirm: () -> Unit) {
+fun AlertDialog(
+    title: String,
+    onDismiss: () -> Unit,
+    onConfirm: () -> Unit
+) {
     AlertDialog(
         shape = RoundedCornerShape(15.dp),
         title = {
             Text(
-                text = stringResource(id = R.string.the_field_is_empty),
+                text = title,
                 fontSize = 18.sp,
                 fontWeight = FontWeight.Bold
             )

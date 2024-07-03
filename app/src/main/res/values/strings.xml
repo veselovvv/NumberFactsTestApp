@@ -15,4 +15,5 @@
     <string name="ok">OK</string>
     <string name="delete_history_content_description">Delete history</string>
     <string name="retry">Retry</string>
+    <string name="text_field_must_contain_a_number">Text field must contain a number</string>
 </resources>
