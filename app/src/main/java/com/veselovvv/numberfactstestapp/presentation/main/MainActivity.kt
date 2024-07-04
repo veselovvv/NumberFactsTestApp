@@ -11,6 +11,7 @@ import com.veselovvv.numberfactstestapp.presentation.core.Routes
 import com.veselovvv.numberfactstestapp.presentation.fact.FactDetailsScreen
 import com.veselovvv.numberfactstestapp.presentation.fact.FactViewModel
 import com.veselovvv.numberfactstestapp.presentation.facts.FactsViewModel
+import com.veselovvv.numberfactstestapp.presentation.theme.NumberFactsTestAppTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -19,20 +20,22 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         setContent {
-            val factsViewModel = hiltViewModel<FactsViewModel>()
-            val factViewModel = hiltViewModel<FactViewModel>()
-            val navController = rememberNavController()
+            NumberFactsTestAppTheme {
+                val factsViewModel = hiltViewModel<FactsViewModel>()
+                val factViewModel = hiltViewModel<FactViewModel>()
+                val navController = rememberNavController()
 
-            NavHost(navController = navController, startDestination = Routes.Main.getRoute()) {
-                composable(Routes.Main.getRoute()) {
-                    MainScreen(
-                        factsViewModel = factsViewModel,
-                        factViewModel = factViewModel,
-                        navController = navController
-                    )
-                }
-                composable(Routes.FactDetails.getRoute()) {
-                    FactDetailsScreen(viewModel = factViewModel)
+                NavHost(navController = navController, startDestination = Routes.Main.getRoute()) {
+                    composable(Routes.Main.getRoute()) {
+                        MainScreen(
+                            factsViewModel = factsViewModel,
+                            factViewModel = factViewModel,
+                            navController = navController
+                        )
+                    }
+                    composable(Routes.FactDetails.getRoute()) {
+                        FactDetailsScreen(viewModel = factViewModel)
+                    }
                 }
             }
         }

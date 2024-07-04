@@ -2,6 +2,7 @@ package com.veselovvv.numberfactstestapp.presentation.core
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -20,7 +21,8 @@ fun NoHistoryScreen() {
         Text(
             text = stringResource(id = R.string.no_history),
             fontSize = 20.sp,
-            fontWeight = FontWeight.Bold
+            fontWeight = FontWeight.Bold,
+            color = MaterialTheme.colorScheme.onSecondary,
         )
     }
 }

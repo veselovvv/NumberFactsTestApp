@@ -1,5 +1,6 @@
 package com.veselovvv.numberfactstestapp.presentation.main
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -12,10 +13,11 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.AlertDialog
-import androidx.compose.material.TextField
+import androidx.compose.material.Surface
 import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -120,18 +122,23 @@ fun MainScreen(
 
 @Composable
 fun EnterNumberTextField(textFieldState: String, onTextFieldValueChange: (String) -> Unit) {
-    TextField(
-        value = textFieldState,
-        label = {
-            Text(text = stringResource(id = R.string.enter_a_number_hint))
-        },
-        onValueChange = { text ->
-            onTextFieldValueChange(text)
-        },
-        singleLine = true,
+    Surface(
         modifier = Modifier.fillMaxWidth(),
-        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
-    )
+    ) {
+        OutlinedTextField(
+            value = textFieldState,
+            label = {
+                Text(text = stringResource(id = R.string.enter_a_number_hint))
+            },
+            onValueChange = { text ->
+                onTextFieldValueChange(text)
+            },
+            singleLine = true,
+            modifier = Modifier.fillMaxWidth()
+                .background(MaterialTheme.colorScheme.surface),
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+        )
+    }
 }
 
 @Composable
@@ -160,13 +167,7 @@ fun GetFactButton(textFieldState: String, onButtonClick: () -> Unit) {
             if (textFieldState.isEmpty())
                 openAlertDialog = true
             else onButtonClick()
-        },
-        colors = ButtonColors( // TODO change to Compose colors + check in different themes
-            containerColor = Color(0xFFFF9800),
-            contentColor = Color.White,
-            disabledContainerColor = Color.Gray,
-            disabledContentColor = Color.LightGray
-        )
+        }
     ) {
         Text(text = stringResource(id = R.string.get_fact))
     }
@@ -180,17 +181,20 @@ fun AlertDialog(
 ) {
     AlertDialog(
         shape = RoundedCornerShape(15.dp),
+        backgroundColor = MaterialTheme.colorScheme.surface,
         title = {
             Text(
                 text = title,
                 fontSize = 18.sp,
-                fontWeight = FontWeight.Bold
+                fontWeight = FontWeight.Bold,
+                color = MaterialTheme.colorScheme.onSecondary
             )
         },
         text = {
             Text(
                 text = stringResource(id = R.string.please_enter_a_number),
-                fontSize = 18.sp
+                fontSize = 18.sp,
+                color = MaterialTheme.colorScheme.onSecondary
             )
         },
         onDismissRequest = onDismiss,
@@ -211,13 +215,7 @@ fun AlertDialog(
 fun GetFactAboutRandomNumberButton(onButtonClick: () -> Unit) {
     Button(
         modifier = Modifier.fillMaxWidth(),
-        onClick = onButtonClick,
-        colors = ButtonColors( // TODO change to Compose colors + check in different themes
-            containerColor = Color(0xFFFF9800),
-            contentColor = Color.White,
-            disabledContainerColor = Color.Gray,
-            disabledContentColor = Color.LightGray
-        )
+        onClick = onButtonClick
     ) {
         Text(text = stringResource(id = R.string.get_fact_about_random_number))
     }
@@ -234,7 +232,8 @@ fun HistoryLabelAndDeleteIconSection(onDeleteHistoryIconClick: () -> Unit) {
         Text(
             text = stringResource(id = R.string.history),
             fontSize = 18.sp,
-            fontWeight = FontWeight.Bold
+            fontWeight = FontWeight.Bold,
+            color = MaterialTheme.colorScheme.onSecondary
         )
         Icon(
             painter = painterResource(id = R.drawable.ic_baseline_delete_24),
@@ -274,11 +273,13 @@ fun FactBaseView(number: Int, fact: String, onFactClick: (Int, String) -> Unit) 
             text = number.toString(),
             fontSize = 18.sp,
             fontWeight = FontWeight.Bold,
+            color = MaterialTheme.colorScheme.onSecondary,
             modifier = Modifier.padding(8.dp)
         )
         Text(
             text = fact,
             fontSize = 18.sp,
+            color = MaterialTheme.colorScheme.onSecondary,
             modifier = Modifier.padding(8.dp),
             maxLines = 1,
             overflow = TextOverflow.Ellipsis
