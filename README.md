@@ -1,5 +1,5 @@
 # NumberFactsTestApp
-🔢 Android Test App using Kotlin, Clean Architecture, MVVM, ViewModel, LiveData, Coroutines, Hilt, Navigation Component, View Binding, Retrofit, Room, and Material Design. 
+🔢 Android Test App using Kotlin, Clean Architecture, MVVM, ViewModel, LiveData, Coroutines, Hilt, Retrofit, Room, Jetpack Compose and Material Design. 
 
 This app allows you to get a fact about an entered number or a random number from this API - http://numbersapi.com/. The history of facts is stored in a database and can be cleared.
 
@@ -10,11 +10,13 @@ The lower part displays the history of facts. Clicking on a fact opens a second 
 
 The second screen displays a number and a fact.
 
-![1](https://user-images.githubusercontent.com/76612421/213875530-99621b35-1096-4885-83f0-222e932ad72c.PNG)
-![2](https://user-images.githubusercontent.com/76612421/213875533-4684df61-d256-4b9d-bea4-5ad3a471a8e5.PNG)
-![3](https://user-images.githubusercontent.com/76612421/213875534-e7caec9b-6c62-4d77-946a-2c9b611a7d02.PNG)
-![4](https://user-images.githubusercontent.com/76612421/213875536-8f0ef159-873e-4e82-901c-027a6638a59b.PNG)
-![5](https://user-images.githubusercontent.com/76612421/213875538-97b42cb0-7bdb-4058-8838-492a0e4e20ae.PNG)
-![6](https://user-images.githubusercontent.com/76612421/213875541-b61d0318-0cc5-4d2c-8866-c8673f5228b6.PNG)
-![7](https://user-images.githubusercontent.com/76612421/213875544-7a1986c7-e352-4e36-a9e3-b425fd527b6b.PNG)
-![8](https://user-images.githubusercontent.com/76612421/213875549-e5522152-ae95-43e9-a08c-9d02220538af.PNG)
+![1](https://github.com/veselovvv/NumberFactsTestApp/assets/76612421/5a3df019-3365-4209-a7a3-decfab5035a2)
+![2](https://github.com/veselovvv/NumberFactsTestApp/assets/76612421/c09e20fe-7c05-4de1-8e48-e7d326840b99)
+![3](https://github.com/veselovvv/NumberFactsTestApp/assets/76612421/f6f0c65b-b070-41fc-9d7f-5dd2b81d83ee)
+![4](https://github.com/veselovvv/NumberFactsTestApp/assets/76612421/4674c572-c836-443e-b4cd-57837f3d1ec6)
+![5](https://github.com/veselovvv/NumberFactsTestApp/assets/76612421/fa876ca8-8185-48f4-a5a0-e113b54a3d1b)
+![6](https://github.com/veselovvv/NumberFactsTestApp/assets/76612421/cfa2a8e0-784f-4dcd-b9e5-f0369a3c41aa)
+![7](https://github.com/veselovvv/NumberFactsTestApp/assets/76612421/7d8e5b6c-7e7d-4ce4-8eab-43bdc66bd1a3)
+![8](https://github.com/veselovvv/NumberFactsTestApp/assets/76612421/3dca43a4-66cf-47b2-aa84-c1b0e6b49bba)
+![9](https://github.com/veselovvv/NumberFactsTestApp/assets/76612421/0b4cdc0a-5ffc-4629-9c6d-b7da472e0967)
+
