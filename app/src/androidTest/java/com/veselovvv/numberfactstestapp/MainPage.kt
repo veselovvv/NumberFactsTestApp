@@ -30,4 +30,7 @@ class MainPage(
 
     fun checkFactsListState(facts: List<Pair<String, String>>) =
         factsListUi.checkListState(facts = facts)
+
+    fun clickGetFactAboutRandomNumberButton() =
+        clickOnNode(R.string.get_fact_about_random_number)
 }

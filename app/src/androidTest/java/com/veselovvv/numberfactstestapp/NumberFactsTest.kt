@@ -93,4 +93,20 @@ class NumberFactsTest {
             )
         )
     }
+
+    /**
+     * Check initial ui state
+     * 1. Click "Get fact about random number" button
+     * Check facts list state with 1 element 666
+     * 2. Recreate activity
+     * Check facts list state with 1 element 666
+     */
+    @Test
+    fun getFactAboutRandomNumber() = with(MainPage(composeRule)) {
+        checkInitialUiState()
+        clickGetFactAboutRandomNumberButton()
+        checkFactsListState(facts = listOf(Pair("666", "666 fact about random number")))
+        composeRule.activityRule.scenario.recreate()
+        checkFactsListState(facts = listOf(Pair("666", "666 fact about random number")))
+    }
 }
