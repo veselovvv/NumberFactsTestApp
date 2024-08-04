@@ -29,6 +29,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -252,7 +253,7 @@ fun FactsList(
     onFactClick: (Int, String) -> Unit,
     onRetryButtonClick: () -> Unit
 ) {
-    LazyColumn(modifier = Modifier.fillMaxSize()) {
+    LazyColumn(modifier = Modifier.fillMaxSize().testTag("Facts List")) {
         items(facts) { factUI ->
             factUI.map(
                 onFactClick = { number, fact ->
@@ -266,9 +267,11 @@ fun FactsList(
 
 @Composable
 fun FactBaseView(number: Int, fact: String, onFactClick: (Int, String) -> Unit) {
-    Column(modifier = Modifier.clickable {
-        onFactClick(number, fact)
-    }) {
+    Column(
+        modifier = Modifier.clickable {
+            onFactClick(number, fact)
+        }
+    ) {
         Text(
             text = number.toString(),
             fontSize = 18.sp,
