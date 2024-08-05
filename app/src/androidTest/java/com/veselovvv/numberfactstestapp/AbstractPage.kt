@@ -3,7 +3,6 @@ package com.veselovvv.numberfactstestapp
 import androidx.annotation.StringRes
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.AndroidComposeTestRule
-import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.test.ext.junit.rules.ActivityScenarioRule
@@ -19,10 +18,6 @@ abstract class AbstractPage(
 
     fun checkNodeIsDisplayedWithText(message: String) {
         composeRule.onNodeWithText(message).assertIsDisplayed()
-    }
-
-    fun checkNodeIsDisplayedWithContentDescription(@StringRes stringId: Int) {
-        composeRule.onNodeWithContentDescription(getString(stringId)).assertIsDisplayed()
     }
 
     fun clickOnNode(@StringRes stringId: Int) {
