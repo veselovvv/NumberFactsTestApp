@@ -109,4 +109,40 @@ class NumberFactsTest {
         composeRule.activityRule.scenario.recreate()
         checkFactsListState(facts = listOf(Pair("666", "666 fact about random number")))
     }
+
+    /**
+     * Check initial ui state
+     * 1. Type "32" in edit text
+     * 2. Click "Get fact" button
+     * Check facts list state with 1 element 32
+     * 3. Type "45" in edit text
+     * 4. Click "Get fact" button
+     * Check facts list state with 1 element 45 and 2 element 32
+     * 5. Click "Delete history" button
+     * Check initial ui state
+     * 6. Recreate activity
+     * Check initial ui state
+     */
+    @Test
+    fun deleteHistory() = with(MainPage(composeRule)) {
+        checkInitialUiState()
+        typeInEditText(text = "32")
+        clickGetFactButton()
+        checkFactsListState(facts = listOf(Pair("32", "fact about 32")))
+
+        typeInEditText(text = "45")
+        clickGetFactButton()
+        checkFactsListState(
+            facts = listOf(
+                Pair("45", "fact about 45"),
+                Pair("32", "fact about 32")
+            )
+        )
+
+        clickDeleteHistoryButton()
+        checkInitialUiState()
+
+        composeRule.activityRule.scenario.recreate()
+        checkInitialUiState()
+    }
 }

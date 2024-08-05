@@ -7,6 +7,7 @@ import com.veselovvv.numberfactstestapp.presentation.main.MainActivity
 class MainPage(
     composeRule: AndroidComposeTestRule<ActivityScenarioRule<MainActivity>, MainActivity>
 ) : AbstractPage(composeRule) {
+    private val deleteHistoryIconUi = DeleteHistoryIconUi(composeRule)
     private val factsListUi = FactsListUi(composeRule)
     private val editTextUi = EditTextUi(composeRule)
 
@@ -14,8 +15,8 @@ class MainPage(
         checkNodeIsDisplayedWithText(R.string.enter_a_number_hint)
         checkNodeIsDisplayedWithText(R.string.get_fact)
         checkNodeIsDisplayedWithText(R.string.get_fact_about_random_number)
-        checkNodeIsDisplayedWithContentDescription(R.string.delete_history_content_description)
 
+        deleteHistoryIconUi.checkIsDisplayed()
         factsListUi.checkInitialState(text = getString(R.string.no_history))
     }
 
@@ -33,4 +34,6 @@ class MainPage(
 
     fun clickGetFactAboutRandomNumberButton() =
         clickOnNode(R.string.get_fact_about_random_number)
+
+    fun clickDeleteHistoryButton() = deleteHistoryIconUi.clickButton()
 }
