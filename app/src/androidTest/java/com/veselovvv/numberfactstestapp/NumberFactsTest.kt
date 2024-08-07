@@ -1,6 +1,7 @@
 package com.veselovvv.numberfactstestapp
 
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
+import androidx.test.espresso.Espresso.pressBack
 import com.veselovvv.numberfactstestapp.presentation.main.MainActivity
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -144,5 +145,55 @@ class NumberFactsTest {
 
         composeRule.activityRule.scenario.recreate()
         checkInitialUiState()
+    }
+
+    /**
+     * Check Main Page is visible
+     * Check initial ui state
+     * 1. Type "32" in edit text
+     * 2. Click "Get fact" button
+     * Check facts list state with 1 element 32
+     * 3. Click on first item in list (index = 0)
+     * Check Fact Details Page is visible
+     * Check fact details state
+     * 4. Recreate activity
+     * Check Fact Details Page is visible
+     * Check fact details state
+     * 5. Press back button
+     * Check Fact Details Page is not visible
+     * Check Main Page is visible
+     * Check facts list state with 1 element 32
+     */
+    @Test
+    fun loadItemDetailsAndGoBack() {
+        val mainPage = MainPage(composeRule)
+
+        with(mainPage) {
+            checkIsVisible()
+            checkInitialUiState()
+            typeInEditText(text = "32")
+            clickGetFactButton()
+            checkFactsListState(facts = listOf(Pair("32", "fact about 32")))
+            clickOnItemInList(index = 0)
+        }
+
+        val factDetailsPage = FactDetailsPage(composeRule)
+
+        with(factDetailsPage) {
+            checkIsVisible()
+            checkFactDetailsState(number = "32", fact = "fact about 32")
+
+            composeRule.activityRule.scenario.recreate()
+            checkIsVisible()
+            checkFactDetailsState(number = "32", fact = "fact about 32")
+        }
+
+        pressBack()
+        factDetailsPage.checkIsNotVisible()
+
+        with(mainPage) {
+            checkIsVisible()
+            checkFactsListState(facts = listOf(Pair("32", "fact about 32")))
+        }
     }
 }
