@@ -2,14 +2,17 @@ package com.veselovvv.numberfactstestapp
 
 import androidx.annotation.StringRes
 import androidx.compose.ui.test.assertIsDisplayed
+import androidx.compose.ui.test.assertIsNotDisplayed
 import androidx.compose.ui.test.junit4.AndroidComposeTestRule
+import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import com.veselovvv.numberfactstestapp.presentation.main.MainActivity
 
 abstract class AbstractPage(
-    private val composeRule: AndroidComposeTestRule<ActivityScenarioRule<MainActivity>, MainActivity>
+    private val composeRule: AndroidComposeTestRule<ActivityScenarioRule<MainActivity>, MainActivity>,
+    private val screenTag: String
 ) {
     fun getString(@StringRes stringId: Int) = composeRule.activity.getString(stringId)
 
@@ -22,5 +25,13 @@ abstract class AbstractPage(
 
     fun clickOnNode(@StringRes stringId: Int) {
         composeRule.onNodeWithText(getString(stringId)).performClick()
+    }
+
+    fun checkIsVisible() {
+        composeRule.onNodeWithTag(screenTag).assertExists()
+    }
+
+    fun checkIsNotVisible() {
+        composeRule.onNodeWithTag(screenTag).assertDoesNotExist()
     }
 }

@@ -51,74 +51,79 @@ fun MainScreen(
     factViewModel: FactViewModel,
     navController: NavController
 ) {
-    val factsUiState = factsViewModel.getFactsLiveData().observeAsState(emptyList())
-    val factElementUiState = factViewModel.getFactElementUiLiveData().observeAsState()
-
-    var textFieldState by remember {
-        mutableStateOf("")
-    }
-
-    var openAlertDialog by remember {
-        mutableStateOf(false)
-    }
-
-    LaunchedEffect(true) { // code in this block runs only once since key1 = true
-        factsViewModel.fetchFacts()
-    }
-
-    if (openAlertDialog) {
-        AlertDialog(
-            title = stringResource(id = R.string.text_field_must_contain_a_number),
-            onDismiss = {
-                openAlertDialog = false
-            },
-            onConfirm = {
-                openAlertDialog = false
-            }
-        )
-    }
-
     Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(8.dp)
+        modifier = Modifier.fillMaxSize()
+            .testTag("MainScreen")
     ) {
-        EnterNumberTextField(textFieldState = textFieldState) { text ->
-            textFieldState = text
-        }
-        GetFactButton(textFieldState) {
-            if (textFieldState.isDigitsOnly())
-                factViewModel.fetchFact(textFieldState.toInt())
-            else
-                openAlertDialog = true
+        val factsUiState = factsViewModel.getFactsLiveData().observeAsState(emptyList())
+        val factElementUiState = factViewModel.getFactElementUiLiveData().observeAsState()
 
+        var textFieldState by remember {
+            mutableStateOf("")
         }
-        GetFactAboutRandomNumberButton {
-            factViewModel.fetchRandomFact()
+
+        var openAlertDialog by remember {
+            mutableStateOf(false)
         }
-        HistoryLabelAndDeleteIconSection {
-            factsViewModel.deleteFacts()
+
+        LaunchedEffect(true) { // code in this block runs only once since key1 = true
+            factsViewModel.fetchFacts()
         }
-        FactsList(
-            facts = factsUiState.value,
-            onFactClick = { number, fact ->
-                factsViewModel.saveFactInfo(number.toString(), fact)
-                navController.navigate(Routes.FactDetails.getRoute())
+
+        if (openAlertDialog) {
+            AlertDialog(
+                title = stringResource(id = R.string.text_field_must_contain_a_number),
+                onDismiss = {
+                    openAlertDialog = false
+                },
+                onConfirm = {
+                    openAlertDialog = false
+                }
+            )
+        }
+
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(8.dp)
+        ) {
+            EnterNumberTextField(textFieldState = textFieldState) { text ->
+                textFieldState = text
+            }
+            GetFactButton(textFieldState) {
+                if (textFieldState.isDigitsOnly())
+                    factViewModel.fetchFact(textFieldState.toInt())
+                else
+                    openAlertDialog = true
+
+            }
+            GetFactAboutRandomNumberButton {
+                factViewModel.fetchRandomFact()
+            }
+            HistoryLabelAndDeleteIconSection {
+                factsViewModel.deleteFacts()
+            }
+            FactsList(
+                facts = factsUiState.value,
+                onFactClick = { number, fact ->
+                    factsViewModel.saveFactInfo(number.toString(), fact)
+                    navController.navigate(Routes.FactDetails.getRoute())
+                },
+                onRetryButtonClick = {
+                    factsViewModel.fetchFacts()
+                }
+            )
+        }
+
+        factElementUiState.value?.map(
+            onSuccess = {
+                factsViewModel.fetchFacts() // reload list of facts from database if success
             },
             onRetryButtonClick = {
                 factsViewModel.fetchFacts()
             }
         )
     }
-
-    factElementUiState.value?.map(
-        onSuccess = {
-            factsViewModel.fetchFacts() // reload list of facts from database if success
-        },
-        onRetryButtonClick = {
-            factsViewModel.fetchFacts()
-        }
-    )
 }
 
 @Composable

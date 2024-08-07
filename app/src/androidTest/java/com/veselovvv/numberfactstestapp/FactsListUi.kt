@@ -7,6 +7,7 @@ import androidx.compose.ui.test.junit4.AndroidComposeTestRule
 import androidx.compose.ui.test.onChildren
 import androidx.compose.ui.test.onFirst
 import androidx.compose.ui.test.onNodeWithTag
+import androidx.compose.ui.test.performClick
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import com.veselovvv.numberfactstestapp.presentation.main.MainActivity
 
@@ -32,5 +33,9 @@ class FactsListUi(
             factItem.assertTextContains(number)
             factItem.assertTextContains(fact)
         }
+    }
+
+    fun clickOnItemInList(index: Int) {
+        factsList.onChildren()[index].performClick()
     }
 }

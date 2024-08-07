@@ -7,6 +7,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -14,8 +15,13 @@ import androidx.compose.ui.unit.sp
 import com.veselovvv.numberfactstestapp.R
 
 @Composable
-fun FactDetailsScreen(viewModel: FactViewModel) {
-    Column(modifier = Modifier.fillMaxSize()) {
+fun FactDetailsScreen(
+    viewModel: FactViewModel
+) {
+    Column(
+        modifier = Modifier.fillMaxSize()
+            .testTag("FactDetailsScreen")
+    ) {
         Text(
             text = stringResource(id = R.string.number_label),
             fontSize = 18.sp,
